@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image filtering</title>
+</head>
+<body>
+  <h1>OpenInsta image processing</h1>
+  <input type="file" accept="image/*" id="imageInput" />
+  <div>
+    <label for="green">Green</label>
+    <input type="range" id="green" min="-255" max="255" value="0">
+    
+    <label for="red">Red</label>
+    <input type="range" id="red" min="-255" max="255" value="0">
+    
+    <label for="blue">Blue</label>
+    <input type="range" id="blue" min="-255" max="255" value="0">
+
+    <label for="brightness">Brightness</label>
+    <input type="range" id="brightness" min="-255" max="255" value="0">
+
+    <label for="contrast">Contrast</label>
+    <input type="range" id="contrast" min="-255" max="255" value="0">
+
+    <label for="grayscale">Grayscale</label>
+    <input type="checkbox" id="grayscale">
+
+    <br>
+    <canvas id="canvas" width="0" height="0"></canvas>
+  </div>
+  <script src="./main.js"></script>
+</body>
+</html>
