@@ -56,16 +56,45 @@ const addBlue = (x, y, value) => {
   currentPixels[index] = clampRGBValue(currentValue + value);
 };
 
+const addBrightness = (x, y, value) => {
+  addRed(x, y, value);
+  addGreen(x, y, value);
+  addBlue(x, y, value);
+};
+
+const setGrayscale = (i, j) => {
+  const redIndex = getIndex(i, j) + RED_OFFSET;
+  const greenIndex = getIndex(i, j) + GREEN_OFFSET;
+  const blueIndex = getIndex(i, j) + BLUE_OFFSET;
+
+  const redValue = currentPixels[redIndex];
+  const greenValue = currentPixels[greenIndex];
+  const blueValue = currentPixels[blueIndex];
+
+  const mean = (redValue + greenValue + blueValue) / 3;
+
+  currentPixels[redIndex] = clampRGBValue(mean);
+  currentPixels[greenIndex] = clampRGBValue(mean);
+  currentPixels[blueIndex] = clampRGBValue(mean);
+};
+
 const runPipeline = () => {
   currentPixels = originalPixels.slice();
 
   const redFilterInputValue = Number(red.value);
   const greenFilterInputValue = Number(green.value);
   const blueFilterInputValue = Number(blue.value);
+  const brightnessFilterInputValue = Number(brightness.value);
+  const grayscaleFilter = grayscale.checked;
 
   for (let i = 0; i < selectedImage.height; i++) {
     for (let j = 0; j < selectedImage.width; j++) {
-      // Add blue to pixel (j, i) according to selected value
+      if (grayscaleFilter) {
+        setGrayscale(j, i);
+      }
+
+      addBrightness(j, i, brightnessFilterInputValue);
+
       addRed(j, i, redFilterInputValue);
       addGreen(j, i, greenFilterInputValue);
       addBlue(j, i, blueFilterInputValue);
