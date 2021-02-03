@@ -78,6 +78,26 @@ const setGrayscale = (i, j) => {
   currentPixels[blueIndex] = clampRGBValue(mean);
 };
 
+const addContrast = (x, y, value) => {
+  const redIndex = getIndex(x, y) + RED_OFFSET;
+  const greenIndex = getIndex(x, y) + GREEN_OFFSET;
+  const blueIndex = getIndex(x, y) + BLUE_OFFSET;
+
+  const redValue = currentPixels[redIndex];
+  const greenValue = currentPixels[greenIndex];
+  const blueValue = currentPixels[blueIndex];
+
+  const contrastRate = (value + 255) / 255;
+
+  const updatedRed = contrastRate * (redValue - 128) + 128;
+  const updatedGreen = contrastRate * (greenValue - 128) + 128;
+  const updatedBlue = contrastRate * (blueValue - 128) + 128;
+
+  currentPixels[redIndex] = clampRGBValue(updatedRed);
+  currentPixels[greenIndex] = clampRGBValue(updatedGreen);
+  currentPixels[blueIndex] = clampRGBValue(updatedBlue);
+}
+
 const runPipeline = () => {
   currentPixels = originalPixels.slice();
 
@@ -85,6 +105,7 @@ const runPipeline = () => {
   const greenFilterInputValue = Number(green.value);
   const blueFilterInputValue = Number(blue.value);
   const brightnessFilterInputValue = Number(brightness.value);
+  const contrastFilterInputValue = Number(contrast.value);
   const grayscaleFilter = grayscale.checked;
 
   for (let i = 0; i < selectedImage.height; i++) {
@@ -94,6 +115,7 @@ const runPipeline = () => {
       }
 
       addBrightness(j, i, brightnessFilterInputValue);
+      addContrast(j, i, contrastFilterInputValue);
 
       addRed(j, i, redFilterInputValue);
       addGreen(j, i, greenFilterInputValue);
